@@ -35,7 +35,7 @@ export const createShortUrl = async (req : Request<{},{},ShortenrequestBody>, re
      shortCode = nanoid(6);
      await pool.query('INSERT INTO urls (original_url, short_code) VALUES ($1, $2)', [url, shortCode]);
 
-     res.status(201).json({ shortCode, shortUrl: `${process.env.BASE_URL}/${shortCode}` });  
+     res.status(201).json({ shortCode, shortUrl: `${process.env.BASE_URL}${shortCode}` });  
      return;
   }catch(err : any){
      if(err.code === '23505'){
