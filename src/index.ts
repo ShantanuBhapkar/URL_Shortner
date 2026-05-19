@@ -14,10 +14,13 @@ const limiter = rateLimit({
     max:10,
     message: 'Too many requests from this IP, please try again later'
 })
-  
+
 app.use(express.json());
 app.use(loggerMiddleware);
 app.use(limiter);
+app.get('/', (req, res) => {
+    res.send('Welcome to URL Shortener Service');
+});
 app.post('/shorten', createShortUrl);
 app.get('/stats/:code', getStats);
 app.get('/:code',redirectToOriginalUrl);
