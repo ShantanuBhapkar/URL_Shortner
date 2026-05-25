@@ -66,7 +66,12 @@ export const redirectToOriginalUrl = async (req : Request<Shortcode_param,{},{}>
         res.status(404).json({error:'Not found'});
         return;
     }
-    const url = result.rows[0].original_url;
+    //result will be an object with a rows property which is an array of rows returned by the query. 
+    // Since we are using RETURNING clause, it will return the updated row, which will contain the original_url.
+    //  We can access it using result.rows[0].original_url.
+    // the rows will be a array of objects, where each object represents a row returned by the query. In our case, we expect only one row to be returned since short_code is unique, so we can access the first element of the array using [0] and then access the original_url property of that object.
+    const url = result.rows[0].original_url; 
+    
     res.redirect(url);
     await redisClient.setEx(`url:${code}`, 3600, url);
     return;
